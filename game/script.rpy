@@ -1,33 +1,16 @@
-﻿# The script of the game goes in this file.
+﻿label start:
+    $ player_name = renpy.input("Please enter your name:")
+    $ player_name = player_name.strip()
 
-# Declare characters used by this game. The color argument colorizes the
-# name of the character.
+    if not player_name:
+        $ player_name = "Sulek"
 
-define e = Character("Eileen")
-
-
-# The game starts here.
-
-label start:
-
-    # Show a background. This uses a placeholder by default, but you can
-    # add a file (named either "bg room.png" or "bg room.jpg") to the
-    # images directory to show it.
-
-    scene bg room
-
-    # This shows a character sprite. A placeholder is used, but you can
-    # replace it by adding a file named "eileen happy.png" to the images
-    # directory.
-
-    show eileen happy
-
-    # These display lines of dialogue.
-
-    e "You've created a new Ren'Py game."
-
-    e "Once you add a story, pictures, and music, you can release it to the world!"
-
-    # This ends the game.
-
-    return
+    label real_start:
+        scene black 
+        "{i}You find yourself in your car returning from a highschool reunion party in another city.{/i}"
+        "{i}It was already 12 am in the morning and in a deep, dark forest connecting the two cities.{/i}"
+        m "{i}This silence is eerie. I should play some music.{/i}"
+        "{i}All of a sudden, you feel an alarming presence in a distance, and then a huge sound in the back.{/i}"
+        "{i}You had crashed into a tree, with your tires busted and no means to call for help.{/i}"
+        "{i}If that was not bad enough, the upset sky that could pour any minute had started doing it's job.{/i}"
+        "{i}You panic on what to do, and while searching for nearby huge trees, you spot a dim fade of light in a distance.{/i}"
