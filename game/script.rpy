@@ -63,17 +63,35 @@ label go_in:
         m "I should probably head back."
         "{i}As you turned away to go back, there was nothing. Just a black wall. The front door had disappeared leaving you in utter shock.{/i}"
         scene black
+        "{i}You then hear a sound in a distance.{/i}"
+        e "grrrrrrrrrrrrrrrrrrrrr..."
         m "Am I dreaming??"
         jump to room_start
     label go_on:
         m "Hell, I will go on."
         "{i}As you start to walk inside, you hear a creepy whistle behind you.{/i}"
-        e "hghhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh..."
+        e "grrrrrrrrrrrrrrrrrrrrrrrrrr..."
         "{i}In complete shock, you quickly turn around, just to see nothing but a dark black wall in place of the door that you had come in from.{/i}"
         scene black
         m "Am I dreaming?"
         jump to room_start
     label room_start:
+        "{i}Terrified of what you just witnessed, you fall into your knees and start calmly collect whatever thoughts you had.{/i}"
+        scene living_room with dissolve with hpunch
+        m "{i}Okay, this is not a dream. I should think of this rationally. If not the ront door, I can see the back door at the far end of the hallway.{/i}"
+        m "I should go check it out."
+        "{i}You head out to the backyard exit but see it locked with a pin, asking for four animals.{/i}"
+        "{i}Then you look around to observe around and find out that there are 4 total rooms in the wide mansion.{/i}"
+        "{i}You find it weird that there were only 4 excluding the living room in such a big mansion, but paid no mind because you had bigger fish to fry.{/i}"
+        m "I have no other options but to do this now..."
+        m "Let's see, there seems to be 4 rooms."
+        m "A Kitchen, a Laboratory, a Bedroom and a Library"
+        menu:
+            m "Which one should I go to first?"
+            "Kitchen":
+                jump to Kitchen_clue
+                
+            
 
             
 
