@@ -86,11 +86,49 @@ label go_in:
         m "I have no other options but to do this now..."
         m "Let's see, there seems to be 4 rooms."
         m "A Kitchen, a Laboratory, a Bedroom and a Library"
+        label mansion_hub:
+            "{i}You find yourself standing in the living room before 4 doors.{/i}"
         menu:
-            m "Which one should I go to first?"
+            m "Which one should I go?"
             "Kitchen":
                 jump to Kitchen_clue
-                
+            "Laboratory":
+                jump to lab_clue
+            "Bedroom":
+                jump to bedroom_clue
+            "Library":
+                jump to library_clue
+label Kitchen_clue:
+            default wolf_symbol_found = False
+            default kitchen_key_found  = False
+label kitchen_room:
+    scene image_kitchen with dissolve with hpunch
+    "{i}You see a wide kitchen with a big table readily set for six, although the dust tells that it hasnt been touched in years.{/i}"
+    "{i}Food that hasnt been touched in years hang around from the kitchen balcony, almost as if staring at you.{/i}"
+label kitchen_menu:
+    "{i}You head towards the table{/i}"
+    menu:
+        "What do you want to check?"
+        "Examine the table.":
+            jump kitchen_table
+        "Check the knives and the cutting board.":
+            jump kitchen_knives
+        "Check the cellar door." if kitchen_key_found:
+            jump kitchen_cellar
+        "Check the cellar door." if not kitchen_key_found:
+            "It is bolted with a heavy lock. You may need to find a key."
+            jump kitchen_menu
+        "Leave the Kitchen.":
+            jump mansion_hub
+label kitchen_table:
+        "{i}You go towards the table where you find six plates.{/i}"
+        "{i}Five of them are chipped, rusty and old. The sixth is a bit finer china plate, and suprisingly spotless.{/i}"
+    menu:
+        "What do you want to do?"
+        "Lift the sixth plate.":
+        "{i}After lifting the sixth plate, a "
+        
+
             
 
             
