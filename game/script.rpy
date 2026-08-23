@@ -1,11 +1,16 @@
-﻿label start:
+﻿default wolf_symbol_found = False
+default kitchen_key_found  = False
+default clues_found = set()
+default entity_suspicion = 0
+
+label start:
     $ player_name = renpy.input("Please enter your name:")
     $ player_name = player_name.strip()
 
     if not player_name:
         $ player_name = "Sulek"
 
-    label real_start:
+label real_start:
         scene black 
         "{i}You find yourself in your car returning from a highschool reunion party in another city.{/i}"
         "{i}It was already 12 am in the morning and in a deep, dark forest connecting the two cities.{/i}"
@@ -44,7 +49,7 @@ label dont_go:
     "{i}You suprisingly feel light in the morning although you feel like you forgot something important.{/i}"
     "{i}You carry on to the road where your broken down car is.{/i}"
     "{i}You wait for a vehicle to pass by and eventually, you make it out of there.{/i}"
-    return:
+    return
 label go_in:
     "{i}Your intrusive thoughts takes over you and you decide to head in.{/i}"
     "{i}Once you go inside, you come upon a huge sitting room with great airflow.{/i}"
@@ -56,26 +61,26 @@ label go_in:
     menu:
         m "Should I head back?"
         "Head back.":
-            jump to Head_back
+            jump Head_back
         "Go on.":
-            jump to go_on
-    label Head_back:
+            jump go_on
+label Head_back:
         m "I should probably head back."
         "{i}As you turned away to go back, there was nothing. Just a black wall. The front door had disappeared leaving you in utter shock.{/i}"
         scene black
         "{i}You then hear a sound in a distance.{/i}"
         e "grrrrrrrrrrrrrrrrrrrrr..."
         m "Am I dreaming??"
-        jump to room_start
-    label go_on:
+        jump room_start
+label go_on:
         m "Hell, I will go on."
         "{i}As you start to walk inside, you hear a creepy whistle behind you.{/i}"
         e "grrrrrrrrrrrrrrrrrrrrrrrrrr..."
         "{i}In complete shock, you quickly turn around, just to see nothing but a dark black wall in place of the door that you had come in from.{/i}"
         scene black
         m "Am I dreaming?"
-        jump to room_start
-    label room_start:
+        jump room_start
+label room_start:
         "{i}Terrified of what you just witnessed, you fall into your knees and start calmly collect whatever thoughts you had.{/i}"
         scene living_room with dissolve with hpunch
         m "{i}Okay, this is not a dream. I should think of this rationally. If not the ront door, I can see the back door at the far end of the hallway.{/i}"
@@ -86,21 +91,18 @@ label go_in:
         m "I have no other options but to do this now..."
         m "Let's see, there seems to be 4 rooms."
         m "A Kitchen, a Laboratory, a Bedroom and a Library"
-        label mansion_hub:
+label mansion_hub:
             "{i}You find yourself standing in the living room before 4 doors.{/i}"
         menu:
             m "Which one should I go?"
             "Kitchen":
-                jump to Kitchen_clue
+                jump Kitchen_room
             "Laboratory":
-                jump to lab_clue
+                jump lab_clue
             "Bedroom":
-                jump to bedroom_clue
+                jump bedroom_clue
             "Library":
-                jump to library_clue
-label Kitchen_clue:
-            default wolf_symbol_found = False
-            default kitchen_key_found  = False
+                jump library_clue
 label kitchen_room:
     scene image_kitchen with dissolve with hpunch
     "{i}You see a wide kitchen with a big table readily set for six, although the dust tells that it hasnt been touched in years.{/i}"
@@ -125,9 +127,48 @@ label kitchen_table:
         "{i}Five of them are chipped, rusty and old. The sixth is a bit finer china plate, and suprisingly spotless.{/i}"
     menu:
         "What do you want to do?"
-        "Lift the sixth plate.":
-        "{i}After lifting the sixth plate, a "
-        
+            "Lift the sixth plate.":
+                "{i}After lifting the sixth plate, a brass key is beneath it. Can it be used for something?{/i}"
+                $ kitchen_key_found = True
+                $ clues_found.add("kitchen_key")
+                m "Someone left this here for me to find it."
+                $ entity_suspiction += 1
+                jump kitchen_menu
+            "Leave it alone.":
+                m "{i}Something feels wrong about touching it. You step back.{/i}"
+                jump kitchen_menu
+label kitchen_knives:
+    "{i}Carved into the cutting board, was a wolf's head half worn out, with it's jaws open.{/i}"
+    if not wolf_symbol_found:
+        $ wolf_symbol_found = True
+        $ clues_found.add("wolf_symbol")
+        m "So the wolf is the first clue to the exit."
+        jump kitchen_menu
+    else:
+        m "The wolf again. I should look for other things."
+        jump kitchen_menu
+label kitchen_cellar:
+    "{i}The key turns easily. Too easily. Cold air flows from the passage below.{/i}"
+    menu:
+        "{i}Do you choose to go down?{/i}"
+        "Go down.":
+            scene black with fade_black
+            "{i}You walk down to the bottom of the cell.{/i}"
+            "{i}At the pitch darkness of the cell, where you can't see clearly, you feel an old scrap of paper.{/i}"
+            "{i}Then suddenly, you hear a rustle and a whisper-like voice in your spine.{/i}"
+            e "Ohh~~ I wasnt expecting you to be this brave..."
+            $ entity_suspiction += 2
+            "{i}You immediately rush upwards as soon as you hear that, without looking back."
+            scene image_kitchen with dissolve with hpunch
+            "{i}You shake off the dust from the paper and start reading it.{/i}"
+            $ clues_found.add("cellar_note")
+            "{i}There were four names, with the letter forgive written over and over again.{/i}"
+            m "I wonder what this is about."
+            jump kitchen_menu
+        "Stay at the top.":
+            m "I better not go to that sketchy place."
+            jump kitchen_menu
+
 
             
 
