@@ -343,7 +343,57 @@ label bedroom_floorboard
     jump bedroom_menu
 label backdoor_lock:
     scene living_room with dissolve
-    ""
+    "{i}You stand before the backyard door, with the four keys memorized in your head.{/i}"
+    "{i}Wolf.Stag.Owl.Moth. You think back to the letter, to the order the names were written in.{/i}"
+    m "{i}I only get one real shot at this. I need to be sure.{/i}"
+    menu:
+        "Enter the order: Wolf,Stag,Owl,Moth.":
+            $ lock_correct = True
+            jump lock_result
+        "Enter the order: Moth, Owl, Stag, Wolf.":
+            $ lock_correct = False
+            jump lock_result
+        "Enter the order: Owl, Moth, Stag, Wolf.":
+            $ lock correct = True
+            jump lock_result
+label lock_result:
+    if lock_correct:
+        "{i}The four pins click into place, one after another. A heavy groan echoes from deep inside the door frame.{/i}"
+        m "That is it. This is actually it."
+        jump ending_router
+        else:
+            "{i}The pins jam halfway. Nothing happens. The lock does not react, it just waits, cold under your hand.{/i}"
+            m "That is wrong. This has to be wrong."
+            $ entity_suspiction =+ 3
+            e "You are running out of chances."
+            "{i}Something moves behind you in the dark, closer than it has ever been.{/i}"
+            jump ending_caught
+label ending_router:
+    if entity_suspiction < 5:
+        jump ending_clean_escape
+        else:
+            jump ending_haunted_escape
+label ending_clean_escape:
+    scene black with low_fade
+    "{i}The door swings open into the cold, wet, dark of the forest outside. Real air. Real rain.{/i}"
+    "{i}You do not look back. You do not let yourself. You just run until the mansion is lost behind the trees, then nothing at all.{/i}"
+    "{i}By morning, you are at the roadside, flagging down the car that first passes.{/i}"
+    m "It is over. Whatever that was, it is over."
+    "{i}You never go back for your car.{/i}"
+    "THE END"
+    return
+label ending_haunted_escape:
+    scene black with slow_fade
+    "{i}The door gives way. You stumble out into the rain, gasping like you were just saved from drowning.{/i}"
+    "{i}You make it to the road. You make it home. Weeks pass. Then months.{/i}"
+    "{i}But the temperature in your house never quite sits right anymore. And one eerie rainy night, you hear it as you were just about to fall asleep...{/i}"
+    e "Click."
+    "{i}You never sleep with the lights off again.{/i}"
+    "{i}THE END{/i}"
+    return
+
+
+
     
 
 
