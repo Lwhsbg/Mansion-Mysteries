@@ -6,6 +6,8 @@ default stag_symbol_found = False
 default cabinet_key_found = False
 default shelf_code_found = False
 default owl_symbol_found = False
+default moth_symbol_found = False
+default  mirror_seen = False
 label start:
     $ player_name = renpy.input("Please enter your name:")
     $ player_name = player_name.strip()
@@ -284,6 +286,65 @@ label library_hidden_book:
     $ entity_suspicion += 2
     "{i}The book slips from your hands before you even feel yourself let go of it. It's gone by the time it hits the floor.{/i}"
     jump library_menu
+label bedroom_clue:
+    jump bedroom_room
+label bedroom_room:
+    "{i}Unlike the rest of the house, this room feels almost untouched by the decay outside its door.{/i}"
+    "{i}A bed sits made, the sheets barely faded. A vanity mirror stands in the corner, and a wooden case rests on the dresser.{/i}"
+    m "{i}This room feels... different. Like someone still lives here.{/i}"
+    m "{i}I should look around properly. This might be the last room I need.{/i}"
+    jump bedroom_menu
+label bedroom_menu:
+    menu:
+        "What do you want to check?"
+        "Look at the wooden case on the dresser.":
+            jump bedroom_case
+        "Look at the vanity mirror.":
+            jump bedroom_mirror
+        "Check under the floorboards." if mirror_seen:
+            jump bedroom_floorboard
+        "Check under the floorboards." if not mirror_seen:
+            "{i}Nothing about the floor looks out of place to you right now.{/i}"
+            jump bedroom_menu
+        "Leave the Bedroom.":
+            jump mansion_hub
+label bedroom_case:
+    "{i}Inside the case is a collection of moths, pinned neatly under glass, wings spread wide.{/i}"
+    if not moth_symbol_found:
+        m "{i}A moth this time. That should be the last one.{/i}"
+        $ moth_symbol_found = True
+        $ clues_found.add("moth_symbol")
+        $ entity_suspicion =+ 1
+        "{i}One of the moths, you swear, was not pinned down a moment ago.Shyiii{/i}"
+    else:
+        m "The moth again. I've already got this one."
+    jump bedroom_menu
+label bedroom_mirror:
+    "{i}You step towards the vanity mirror, the glass fogged with age.{/i}"
+    "{i}You wipe it clear with your sleeve, and for a second, your reflection is not quite your own.{/i}"
+    "{i}Something stands behind you in the glass. Tall. Still. Watching.{/i}"
+    m "{i}...{/i}"
+    "{i}You spin around. Nothing is there. When you look back at the mirror, it's just you again.{/i}"
+    e "You weren't supposed to see that yet."
+    $ entity_suspicion =+ 2
+    $ mirror_seen = True
+    m "{i}Okay. Okay. That was real. That was actually real.{/i}"
+    jump bedroom_menu
+label bedroom_floorboard
+    "{i}Still shaken, you notice one floorboard sits slightly raised near the bed.{/i}"
+    "{i}You pry it up. Underneath is a small folded letter, along with a strip of old fabric tied around it.{/i}"
+    "{i}The letter has four names written on it, matching the ones from the cellar note.{/i}"
+    "{i}Beside each name is drawn a small symbol: a wolf, a stag, an owl, a moth.{/i}"
+    m "{i}That's it. That's the order.{/i}"
+    $ clues_found.add("bedroom_letter")
+    "{i}A weight settles over the room, heavier than before.{/i}"
+    e "You found all of it."
+    $ entity_suspicion =+ 2
+    jump bedroom_menu
+label backdoor_lock:
+    scene living_room with dissolve
+    ""
+    
 
 
 
