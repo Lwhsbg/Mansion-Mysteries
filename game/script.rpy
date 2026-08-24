@@ -4,6 +4,8 @@ default clues_found = set()
 default entity_suspicion = 0
 default stag_symbol_found = False
 default cabinet_key_found = False
+default shelf_code_found = False
+default owl_symbol_found = False
 label start:
     $ player_name = renpy.input("Please enter your name:")
     $ player_name = player_name.strip()
@@ -211,13 +213,84 @@ label lab_skull:
         $ stag_symbol_found = True
         $ clues_found.add("stag_symbol")
         m "{i}So it is a stag this room. This is interestingly creepy."
-        $ entity_suspicion += 1
+        $ entity_suspiction += 1
         "{i}As you step back from the skull, you feel eyes on you that aren't there.{/i}"
     else:
         m "The stag again. I've already got this one."
         jump lab_menu
 label lab_cabinet:
-        
+        "{i}You turn the dial of the lock. 3--1--4, and it opens up.{/i}"
+        "{i}Inside, there is a torn photograph of what seems like a family photo wrapped in a muddy cloth.{/i}"
+        m "Is this the family photo of the family which used to live here? I should wash it and look at it properly."
+        $ clues_found.add(lab_photo)
+        e "{i}...{/i}"
+        "{i}You suddenly feel a cold gust of wind straight on your neck. But more than that, from a distance you can feel something staring you down.{/i}"
+        "{i}You sense it getting closer and closer. In a hurry, you throw the photo away and then make a run for it outside the laboratory.{/i}"
+        $ entity_suspiction =+ 2 
+        jump lab_menu
+label library_clue:
+    jump library_room
+label library_room:
+    "{i}Tall shelves stretch up into shadow, packed with books that look untouched by anything but time.{/i}"
+    "{i}The room is covered with dust, with seemingly a globe at the middle.{/i}"
+    m "{i}If there are answers in this house, they're probably in here somewhere.{/i}"
+    m "{i}There are many things that I can find here. I should definitely try searching around.{/i}"
+    jump library_menu
+label library_menu:
+    menu:
+            "What do you want to check?"
+        "Look through the family ledger.":
+            jump library_ledger
+        "Examine the owl bookend by the globe around the middle.":
+            jump library_owl
+        "Search the shelves for a hidden book." if shelf_code_found:
+            jump library_hidden_book
+        "Search the shelves for a hidden book." if not shelf_code_found:
+            "{i}The shelves are a mess, hundreds of spines all blurring together. You wouldn't know what to look for without some kind of order to search by.{/i}"
+            jump library_menu
+        "Leave the Library.":
+            jump mansion_hub
+label library_ledger:
+    "{i}You open a ledger lying in the desk of the library. There were names, some minimal info.{/i}"
+    "{i}But in the end of it all, there was a family tree drawn with fading ink.{/i}"
+    "{i}Seems like this person was tracking the blood relation percentage.{/i}"
+    "{i}There, just one name was scratched out.{/i}"
+    m "Looks like this person did not want anyone to figure out who this was.{/i}"
+    "{i}On the last page, there was a slight bit of text at the bottom that read:{/i}"
+    m "Shelf 3, row 1?"
+    m "{i}That is oddly specific. Maybe that means something.{/i}"
+    $ shelf_code_found = True
+    $ clues_found.add("library_ledger")
+    jump library_menu
+label library_owl:
+    if not owl_symbol_found:
+    "{i}An owl made up of rare dark wood perches up on the table, with it's eyes hollowed out.{/i}"
+    m "That is creepy. But an owl this time huh."
+    $ owl_symbol_found = True
+    $ clues_found.add("owl_symbol")
+    $ entity_suspiction =+ 1
+    "{i}For a moment, you'd swear the owl's head has turned slightly since you walked in.{/i}"
+    else:
+        m "The owl again. I've already got this one."
+    jump library_menu
+label library_hidden_book:
+    "{i}You follow the note that you got from the ledger, shelf 3, row 1.{/i}"
+    "{i}There, you find a singular old book.{/i}"
+    m "Oh, what is it about this time..."
+    "{i}Inside isn't a story. It's a diary, the handwriting small and childlike.{/i}"
+    "{i}\"Grandmother's voice is still in the walls. Papa says it's the wind. I don't think Papa believes that either.\"{/i}"
+    $ clues_found.add("library_diary")
+    e "You're not supposed to read that."
+    $ entity_suspicion += 2
+    "{i}The book slips from your hands before you even feel yourself let go of it. It's gone by the time it hits the floor.{/i}"
+    jump library_menu
+
+
+
+
+
+
+
 
 
 
