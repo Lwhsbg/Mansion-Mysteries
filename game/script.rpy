@@ -2,7 +2,8 @@
 default kitchen_key_found  = False
 default clues_found = set()
 default entity_suspicion = 0
-
+default stag_symbol_found = False
+default cabinet_key_found = False
 label start:
     $ player_name = renpy.input("Please enter your name:")
     $ player_name = player_name.strip()
@@ -168,6 +169,58 @@ label kitchen_cellar:
         "Stay at the top.":
             m "I better not go to that sketchy place."
             jump kitchen_menu
+label lab_clue:
+            jump laboratory_room
+label laboratory_room:
+    scene lab_room with dissolve with hpunch
+    "{i}The air around the lab becomes sharper, tinged with a chemical smell that stings the back of your throat.{/i}"
+    "{i}You can see a line of cracked beakers on the cabinets. A central chair sits loose in the middle with leather straps hanging from it.{/i}"
+    m "{i}What was this room used for?{/i}"
+    m "{i}I should look around for clues around the lab. There is probably a symbol for the lock somewhere.{/i}"
+    jump lab_menu
+label lab_menu:
+    menu:
+        "What do you want to check?"
+        "Read the journal on the desk.":
+            jump lab_journal
+        "Check the mounted skull on the wall.":
+            jump lab_skull
+        "Try the locked cabinet." if cabinet_key_found:
+            jump lab_cabinet
+        "Try the locked cabinet." if not cabinet_key_found:
+            "{i}It seems to be locked with a combination code which you do not know about yet.{/i}"
+            "{i}Maybe you could find it somewhere.{/i}"
+            jump lab_menu
+        "Leave the laboratory.":
+            jump mansion_hub
+label lab_journal:
+    "{i}You open the journal and check the pages.{/i}"
+    "{i}The first few pages were normal. Reports on progress, dosage and hope.{/i}"
+    "{i}Further in, the handwriting turns jagged, almost like the writer is getting frustrated overtime.{/i}"
+    "{i}There are many torned out pages with jagged handwriting.{/i}"
+    m "{i}Maybe the code has been torned out by whoever this is. The cabinet was not meant to be after all.{/i}"
+    "{i}Just as you are losing hope on finding the combination, You approach the last page.{/i}"
+    "{i}There, with a ruined handwriting laid a combination, what seemed like a three--one--four.{/i}"
+    "{i}After that, written..'She is running out of time.'{/i}"
+    $ cabinet_key_found = True
+    $ clues_found.add("lab_journal")
+    jump lab_menu
+label lab_skull:
+    "{i}Mounted above the cabinet is a stag's skull, antlers spread wide. Something is etched faintly into the bone.{/i}"
+    if not stag_symbol_found:
+        $ stag_symbol_found = True
+        $ clues_found.add("stag_symbol")
+        m "{i}So it is a stag this room. This is interestingly creepy."
+        $ entity_suspicion += 1
+        "{i}As you step back from the skull, you feel eyes on you that aren't there.{/i}"
+    else:
+        m "The stag again. I've already got this one."
+        jump lab_menu
+label lab_cabinet:
+        
+
+
+
 
 
             
